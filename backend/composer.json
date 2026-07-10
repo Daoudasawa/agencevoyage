@@ -8,10 +8,11 @@
     "require": {
         "php": "^8.2",
         "ext-gd": "*",
-        "ext-zip": "*",
         "ext-pdo_pgsql": "*",
+        "ext-zip": "*",
         "barryvdh/laravel-dompdf": "^3.1",
         "laravel/framework": "^12.0",
+        "laravel/octane": "^2.17",
         "laravel/sanctum": "^4.3",
         "laravel/tinker": "^2.10.1",
         "maatwebsite/excel": "^3.1"
