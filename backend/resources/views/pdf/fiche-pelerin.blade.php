@@ -67,7 +67,7 @@
   <div class="header">
     <div class="header-row">
       <div class="header-left">
-        <h1>🕌 Hajj & Omra BF</h1>
+        <h1> Hajj & Omra BF</h1>
         <p>Agence de Voyage — Burkina Faso</p>
       </div>
       <div class="header-right">

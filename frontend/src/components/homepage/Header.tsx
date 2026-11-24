@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
-import { MenuOutlined, CloseOutlined, UserOutlined, DashboardOutlined, LogoutOutlined } from '@ant-design/icons';
+import { MenuOutlined, CloseOutlined, UserOutlined, DashboardOutlined } from '@ant-design/icons';
 
 const Header: React.FC = () => {
-  const { user, token, logout } = useAuth();
+  const { user, token } = useAuth();
   const navigate = useNavigate();
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
@@ -46,30 +46,79 @@ const Header: React.FC = () => {
   ];
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/95 dark:bg-zinc-950/95 backdrop-blur-md shadow-md py-4'
-          : 'bg-transparent py-6'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <span className="text-2xl font-bold bg-gradient-to-r from-emerald-600 to-amber-500 bg-clip-text text-transparent">
-              HajjOmra BF
+    <header className="fixed top-0 left-0 right-0 z-50 bg-[#FDFBF7] shadow-sm border-b border-[#E8E2D5] transition-all">
+      {/* Top Announcement Bar */}
+      <div className="bg-[#F5F0E6] border-b border-[#E8E2D5] py-2 text-xs text-[#4B5563]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-2">
+          {/* Left Highlights */}
+          <div className="flex items-center space-x-6">
+            <span className="flex items-center gap-1.5 font-medium">
+              <span>✈</span> 20 ans d'expérience
             </span>
+            <span className="hidden sm:flex items-center gap-1.5 font-medium">
+              <span>👥</span> +12 000 pèlerins accompagnés
+            </span>
+            <span className="hidden md:flex items-center gap-1.5 font-medium">
+              <span>🛡</span> Licence agréée
+            </span>
+          </div>
+
+          {/* Right Contact & Client Portal */}
+          <div className="flex items-center space-x-4">
+            <a
+              href="tel:+966545126462"
+              className="flex items-center gap-1.5 font-semibold text-[#1F2937] hover:text-[#2D5A4C] transition-colors"
+            >
+              <span>📞</span> +966 545 126 462
+            </a>
+            <a
+              href="https://wa.me/966545126462"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-6 h-6 rounded-full bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center hover:bg-[#2D5A4C] hover:text-white transition-all text-xs"
+              title="WhatsApp Direct"
+            >
+              💬
+            </a>
+            <Link
+              to={token ? (user?.role === 'pelerin' ? '/pelerin/dashboard' : '/agent/dashboard') : '/connexion'}
+              className="px-3 py-1 bg-[#FDFBF7] border border-[#E8E2D5] hover:border-[#2D5A4C] rounded-full text-[11px] font-bold text-[#1F2937] hover:text-[#2D5A4C] transition-all flex items-center gap-1.5"
+            >
+              <UserOutlined className="text-[10px]" />
+              {token ? 'Mon Espace' : 'Espace client'}
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Navbar */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
+        <div className="flex items-center justify-between">
+          {/* Logo ASEMAOU */}
+          <Link to="/" className="flex items-center space-x-3">
+            <div className="w-11 h-11 bg-[#2D5A4C] rounded-xl flex items-center justify-center text-xl shadow-md border border-[#B45309]/30 shrink-0 text-[#FDFBF7]">
+              🕋
+            </div>
+            <div>
+              <span className="block text-lg font-black text-[#2D5A4C] tracking-tight leading-none uppercase font-sans">
+                ASEMAOU
+              </span>
+              <span className="block text-[9px] font-bold text-[#B45309] uppercase tracking-wider mt-0.5">
+                Voyage et Tourisme HDJ
+              </span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
-            {navLinks.map((link) => (
+          <nav className="hidden lg:flex items-center space-x-7">
+            {navLinks.map((link, idx) => (
               <a
                 key={link.label}
                 href={link.href}
-                className={`text-sm font-medium transition-colors hover:text-emerald-600 ${
-                  isScrolled ? 'text-zinc-700 dark:text-zinc-300' : 'text-white hover:text-emerald-200'
+                className={`text-sm font-semibold transition-all relative py-1 ${
+                  idx === 0
+                    ? 'text-[#2D5A4C] after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#B45309]'
+                    : 'text-[#4B5563] hover:text-[#2D5A4C]'
                 }`}
               >
                 {link.label}
@@ -77,46 +126,13 @@ const Header: React.FC = () => {
             ))}
           </nav>
 
-          {/* Actions */}
+          {/* Action CTA Button (10% Accent Terre Cuite) */}
           <div className="hidden lg:flex items-center space-x-4">
-            {token ? (
-              <div className="flex items-center space-x-3">
-                <Link
-                  to={user?.role === 'pelerin' ? '/pelerin/dashboard' : '/agent/dashboard'}
-                  className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                    isScrolled
-                      ? 'bg-zinc-100 text-zinc-800 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800'
-                      : 'bg-white/10 text-white hover:bg-white/20 backdrop-blur-sm'
-                  }`}
-                >
-                  <DashboardOutlined />
-                  Tableau de bord
-                </Link>
-                <button
-                  onClick={logout}
-                  className={`p-2 rounded-full hover:bg-red-50 hover:text-red-600 transition-colors ${
-                    isScrolled ? 'text-zinc-500' : 'text-white/80 hover:bg-white/10'
-                  }`}
-                  title="Déconnexion"
-                >
-                  <LogoutOutlined className="text-lg" />
-                </button>
-              </div>
-            ) : (
-              <Link
-                to="/connexion"
-                className={`text-sm font-semibold transition-colors ${
-                  isScrolled ? 'text-zinc-700 dark:text-zinc-300 hover:text-emerald-600' : 'text-white hover:text-emerald-200'
-                }`}
-              >
-                Connexion
-              </Link>
-            )}
-
             <button
               onClick={handleBookNow}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-sm px-6 py-2.5 rounded-full shadow-lg shadow-emerald-600/20 transition-all hover:scale-105 active:scale-95"
+              className="btn-primary !py-2.5 !px-5 shadow-md flex items-center gap-2 cursor-pointer"
             >
+              <span>📅</span>
               Réserver maintenant
             </button>
           </div>
@@ -125,15 +141,13 @@ const Header: React.FC = () => {
           <div className="flex lg:hidden items-center space-x-3">
             <button
               onClick={handleBookNow}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-4 py-2 rounded-full shadow-md transition-all"
+              className="btn-primary !px-3.5 !py-2 !text-xs"
             >
               Réserver
             </button>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className={`p-2 rounded-lg transition-colors ${
-                isScrolled ? 'text-zinc-800 dark:text-white' : 'text-white hover:bg-white/10'
-              }`}
+              className="p-2 text-[#2D5A4C] hover:bg-[#F5F0E6] rounded-lg transition-colors"
             >
               {isMobileMenuOpen ? <CloseOutlined style={{ fontSize: 20 }} /> : <MenuOutlined style={{ fontSize: 20 }} />}
             </button>
@@ -143,49 +157,37 @@ const Header: React.FC = () => {
 
       {/* Mobile Menu Panel */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden absolute top-full left-0 right-0 bg-white dark:bg-zinc-950 shadow-xl border-t border-zinc-100 dark:border-zinc-900 py-4 px-6 space-y-4">
+        <div className="lg:hidden bg-[#FDFBF7] shadow-xl border-t border-[#E8E2D5] py-4 px-6 space-y-4">
           <nav className="flex flex-col space-y-3">
             {navLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-zinc-700 dark:text-zinc-300 text-base font-medium hover:text-emerald-600 py-1"
+                className="text-[#1F2937] text-sm font-semibold hover:text-[#2D5A4C] py-1"
               >
                 {link.label}
               </a>
             ))}
           </nav>
           
-          <div className="border-t border-zinc-100 dark:border-zinc-900 pt-4 flex flex-col gap-3">
+          <div className="border-t border-[#E8E2D5] pt-4 flex flex-col gap-2.5">
             {token ? (
-              <>
-                <Link
-                  to={user?.role === 'pelerin' ? '/pelerin/dashboard' : '/agent/dashboard'}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center justify-center gap-2 bg-zinc-100 dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 py-2.5 rounded-xl font-medium text-sm"
-                >
-                  <DashboardOutlined />
-                  Tableau de bord
-                </Link>
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    logout();
-                  }}
-                  className="flex items-center justify-center gap-2 text-red-600 py-2 rounded-xl text-sm font-medium hover:bg-red-50"
-                >
-                  <LogoutOutlined />
-                  Se déconnecter
-                </button>
-              </>
+              <Link
+                to={user?.role === 'pelerin' ? '/pelerin/dashboard' : '/agent/dashboard'}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 bg-[#F5F0E6] text-[#2D5A4C] py-2.5 rounded-xl font-bold text-xs hover:bg-[#EBF2EE]"
+              >
+                <DashboardOutlined />
+                Tableau de bord
+              </Link>
             ) : (
               <Link
                 to="/connexion"
                 onClick={() => setIsMobileMenuOpen(false)}
-                className="text-center text-zinc-700 dark:text-zinc-300 py-2 text-sm font-semibold border border-zinc-200 dark:border-zinc-800 rounded-xl"
+                className="text-center text-[#2D5A4C] py-2.5 text-xs font-bold border border-[#E8E2D5] rounded-xl hover:bg-[#F5F0E6]"
               >
-                Connexion
+                Espace Client / Connexion
               </Link>
             )}
           </div>

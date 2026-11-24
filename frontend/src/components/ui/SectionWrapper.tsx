@@ -17,14 +17,18 @@ const SectionWrapper: React.FC<SectionWrapperProps> = ({
   const getBgClass = () => {
     switch (bgColor) {
       case 'gray':
-        return 'bg-gray-50 dark:bg-zinc-900';
+        // Nuance structurante (Sable légèrement plus marqué)
+        return 'bg-[#F5F0E6]';
       case 'dark':
-        return 'bg-zinc-950 text-white dark:bg-black';
+        // Fond contrasté (Sable très doux)
+        return 'bg-[#FAF6EE]';
       case 'gradient':
-        return 'bg-gradient-to-b from-white to-gray-50 dark:from-zinc-950 dark:to-zinc-900';
+        // Dégradé naturel Crème Sable vers nuance structurante
+        return 'bg-gradient-to-b from-[#FDFBF7] to-[#F5F0E6]';
       case 'light':
       default:
-        return 'bg-white dark:bg-zinc-950';
+        // Fond principal 60% Crème Sable
+        return 'bg-[#FDFBF7]';
     }
   };
 

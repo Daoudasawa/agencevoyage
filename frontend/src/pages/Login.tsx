@@ -42,96 +42,98 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      background: 'linear-gradient(135deg, #0a1f0f 0%, #0d3b1e 40%, #1a1a2e 100%)',
-      fontFamily: "'Outfit', 'Inter', -apple-system, sans-serif",
-    }}>
-      {/* Panneau gauche — visuel */}
-      <div style={{
-        flex: 1,
-        display: 'none',
-        position: 'relative',
-        overflow: 'hidden',
-      }} className="lg-panel">
+    <div className="min-h-screen flex font-sans bg-[#FDFBF7]">
+      {/* Panneau gauche — visuel premium (Vert Sauge Foncé 30%) */}
+      <div className="hidden lg:flex flex-1 relative overflow-hidden bg-[#2D5A4C]">
         <img
           src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=1200&q=80"
           alt="La Mecque"
-          style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }}
+          className="w-full h-full object-cover opacity-20 scale-105"
         />
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'linear-gradient(to right, #0a1f0f 0%, transparent 50%)',
-          display: 'flex', flexDirection: 'column', justifyContent: 'center',
-          padding: '60px',
-        }}>
-          <div style={{ fontSize: 48, marginBottom: 16 }}></div>
-          <h2 style={{ color: '#fff', fontSize: 32, fontWeight: 900, lineHeight: 1.2, marginBottom: 16 }}>
-            Accomplissez votre pèlerinage en toute sérénité
-          </h2>
-          <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: 16, lineHeight: 1.6 }}>
-            Plateforme de gestion Hajj & Omra - Agence  de Voyage du Burkina Faso
-          </p>
+        {/* Overlay dégradé */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#2D5A4C]/95 via-[#2D5A4C]/85 to-[#23473C]/95" />
+
+        {/* Contenu panneau gauche */}
+        <div className="absolute inset-0 flex flex-col justify-between p-14">
+          {/* Logo */}
+          <div>
+            <div className="flex items-center gap-3 mb-2">
+              <span className="text-3xl">🕌</span>
+              <div>
+                <div className="text-[#FEF3C7] font-black text-lg leading-tight tracking-tight">ASEMAOU</div>
+                <div className="text-white/70 text-xs tracking-widest uppercase">Voyage & Tourisme HDJ</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Citation centrale */}
+          <div>
+            <div className="inline-block bg-[#B45309]/30 border border-[#FEF3C7]/40 rounded-full px-4 py-1.5 mb-6">
+              <span className="text-[#FEF3C7] text-xs font-bold uppercase tracking-[0.2em]">Plateforme officielle</span>
+            </div>
+            <h2 className="text-white text-4xl font-black leading-tight mb-5 max-w-md" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Accomplissez votre pèlerinage{' '}
+              <span className="text-[#FEF3C7] italic">en toute sérénité</span>
+            </h2>
+            <p className="text-white/75 text-base leading-relaxed max-w-sm">
+              Réservations Hajj & Omra, démarches administratives et hébergements d'exception depuis le Burkina Faso.
+            </p>
+          </div>
+
+          {/* Stats réassurance */}
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              { value: '20 ans', label: "d'expérience" },
+              { value: '+12 000', label: 'pèlerins accompagnés' },
+              { value: '100%', label: 'visa garanti' },
+            ].map((stat) => (
+              <div key={stat.label} className="bg-white/10 border border-white/15 rounded-2xl p-4 text-center">
+                <div className="text-[#FEF3C7] font-black text-xl mb-1">{stat.value}</div>
+                <div className="text-white/70 text-xs leading-tight">{stat.label}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Panneau droite — formulaire */}
-      <div style={{
-        width: '100%',
-        maxWidth: 480,
-        margin: '0 auto',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        padding: '40px 32px',
-      }}>
+      {/* Panneau droite — formulaire (Fond Crème Sable 60%) */}
+      <div className="w-full max-w-md mx-auto flex flex-col justify-center p-8 sm:p-12 relative">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.45 }}
+          transition={{ duration: 0.5 }}
         >
-          {/* Logo */}
-          <div style={{ textAlign: 'center', marginBottom: 36 }}>
-            <div style={{
-              width: 64, height: 64,
-              background: 'rgba(16, 185, 129, 0.15)',
-              border: '1px solid rgba(16, 185, 129, 0.4)',
-              borderRadius: 20,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 28, margin: '0 auto 16px',
-            }}>🕌</div>
-            <h1 style={{ color: '#fff', fontSize: 28, fontWeight: 900, margin: 0 }}>Hajj & Omra BF</h1>
-            <p style={{ color: 'rgba(255,255,255,0.45)', fontSize: 14, marginTop: 6 }}>
-              Connectez-vous à votre espace
-            </p>
+          {/* En-tête mobile */}
+          <div className="lg:hidden text-center mb-8">
+            <span className="text-4xl block mb-2">🕌</span>
+            <div className="text-[#2D5A4C] font-black text-xl">ASEMAOU</div>
+            <div className="text-[#4B5563] text-xs uppercase tracking-widest">Voyage & Tourisme HDJ</div>
+          </div>
+
+          <div className="mb-8">
+            <h1 className="text-[#2D5A4C] text-3xl font-black mb-2" style={{ fontFamily: "'Playfair Display', serif" }}>
+              Bienvenue
+            </h1>
+            <p className="text-[#4B5563] text-sm">Connectez-vous à votre espace personnel</p>
           </div>
 
           {/* Erreur */}
           {errorMsg && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              style={{
-                background: 'rgba(239,68,68,0.12)',
-                border: '1px solid rgba(239,68,68,0.4)',
-                borderRadius: 12,
-                padding: '12px 16px',
-                marginBottom: 20,
-                color: '#fca5a5',
-                fontSize: 14,
-                display: 'flex', alignItems: 'center', gap: 10,
-              }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-red-700 text-sm flex items-center gap-3"
             >
-              <span>⚠️</span> {errorMsg}
+              <span className="text-lg">⚠️</span>
+              <span>{errorMsg}</span>
             </motion.div>
           )}
 
           {/* Formulaire */}
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Email */}
-            <div style={{ marginBottom: 16 }}>
-              <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+            <div>
+              <label className="block text-[#1F2937] text-xs font-bold uppercase tracking-wider mb-2">
                 Adresse E-mail
               </label>
               <input
@@ -140,118 +142,68 @@ const Login: React.FC = () => {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="votre@email.com"
-                style={{
-                  width: '100%', boxSizing: 'border-box',
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,255,255,0.12)',
-                  borderRadius: 12, color: '#fff', fontSize: 15,
-                  padding: '13px 16px', outline: 'none',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={e => e.target.style.borderColor = 'rgba(16,185,129,0.7)'}
-                onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.12)'}
+                className="w-full bg-white border border-[#E8E2D5] focus:border-[#2D5A4C] focus:ring-2 focus:ring-[#2D5A4C]/20 rounded-xl text-[#1F2937] text-sm p-4 outline-none transition-all placeholder:text-slate-400 shadow-sm"
               />
             </div>
 
             {/* Mot de passe */}
-            <div style={{ marginBottom: 24 }}>
-              <label style={{ display: 'block', color: 'rgba(255,255,255,0.5)', fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 8 }}>
+            <div>
+              <label className="block text-[#1F2937] text-xs font-bold uppercase tracking-wider mb-2">
                 Mot de Passe
               </label>
-              <div style={{ position: 'relative' }}>
+              <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  style={{
-                    width: '100%', boxSizing: 'border-box',
-                    background: 'rgba(255,255,255,0.06)',
-                    border: '1px solid rgba(255,255,255,0.12)',
-                    borderRadius: 12, color: '#fff', fontSize: 15,
-                    padding: '13px 48px 13px 16px', outline: 'none',
-                    transition: 'border-color 0.2s',
-                  }}
-                  onFocus={e => e.target.style.borderColor = 'rgba(16,185,129,0.7)'}
-                  onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.12)'}
+                  className="w-full bg-white border border-[#E8E2D5] focus:border-[#2D5A4C] focus:ring-2 focus:ring-[#2D5A4C]/20 rounded-xl text-[#1F2937] text-sm p-4 pr-12 outline-none transition-all placeholder:text-slate-400 shadow-sm"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPass(!showPass)}
-                  style={{
-                    position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)',
-                    background: 'none', border: 'none', cursor: 'pointer', fontSize: 16, lineHeight: 1,
-                  }}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#1F2937] transition-colors text-base"
                 >
                   {showPass ? '🙈' : '👁️'}
                 </button>
               </div>
             </div>
 
-            {/* Bouton */}
+            {/* Bouton connexion (10% Accent Terre Cuite) */}
             <button
               type="submit"
               disabled={loading}
-              style={{
-                width: '100%',
-                background: loading ? 'rgba(16,185,129,0.4)' : '#059669',
-                color: '#fff',
-                fontWeight: 800,
-                fontSize: 15,
-                padding: '15px',
-                borderRadius: 12,
-                border: 'none',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                boxShadow: '0 4px 24px rgba(5,150,105,0.35)',
-                transition: 'all 0.2s',
-                letterSpacing: '0.02em',
-              }}
+              className="btn-primary w-full !py-4 !text-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 transition-all duration-200 mt-2"
             >
               {loading ? '⏳ Connexion en cours...' : 'Se Connecter →'}
             </button>
           </form>
 
           {/* Info démo */}
-          <div style={{
-            marginTop: 24,
-            background: 'rgba(16,185,129,0.08)',
-            border: '1px solid rgba(16,185,129,0.2)',
-            borderRadius: 12,
-            padding: '14px 16px',
-            textAlign: 'center',
-          }}>
-            <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6 }}>
-              Compte Démo Admin
+          <div className="mt-7 bg-[#FEF3C7] border border-[#B45309]/30 rounded-xl p-4 text-center">
+            <p className="text-[#B45309] text-[10px] font-bold uppercase tracking-wider mb-1">
+              Compte Démo Administrateur
             </p>
-            <p style={{ color: '#6ee7b7', fontSize: 14, fontFamily: 'monospace', fontWeight: 600 }}>
-              admin@hajjomra.bf&nbsp;&nbsp;/&nbsp;&nbsp;password
+            <p className="text-[#1F2937] text-xs font-mono font-semibold">
+              admin@hajjomra.bf &nbsp;/&nbsp; password
             </p>
           </div>
 
-          {/* Lien inscription */}
-          <p style={{ textAlign: 'center', marginTop: 24, color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>
-            Pas de compte ?{' '}
-            <Link to="/inscription" style={{ color: '#34d399', fontWeight: 700, textDecoration: 'none' }}>
+          {/* Liens */}
+          <p className="text-center mt-6 text-[#4B5563] text-xs">
+            Pas encore de compte ?{' '}
+            <Link to="/inscription" className="text-[#2D5A4C] font-bold hover:text-[#B45309] transition-colors">
               S'inscrire
             </Link>
           </p>
-
-          {/* Retour accueil */}
-          <p style={{ textAlign: 'center', marginTop: 8 }}>
-            <Link to="/" style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13, textDecoration: 'none' }}>
-              ← Retour à la page d'accueil
+          <p className="text-center mt-3">
+            <Link to="/" className="text-slate-400 hover:text-[#2D5A4C] text-xs transition-colors">
+              ← Retour à l'accueil
             </Link>
           </p>
         </motion.div>
       </div>
-
-      <style>{`
-        @media (min-width: 1024px) {
-          .lg-panel { display: flex !important; }
-        }
-        input::placeholder { color: rgba(255,255,255,0.25) !important; }
-      `}</style>
     </div>
   );
 };

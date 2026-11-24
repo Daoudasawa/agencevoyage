@@ -11,31 +11,26 @@ const Register: React.FC = () => {
   const [telephone, setTelephone] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
-  const [showPass, setShowPass] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [showPass, setShowPass] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password !== passwordConfirm) {
+      setErrorMsg('Les mots de passe ne correspondent pas.');
+      return;
+    }
     setLoading(true);
     setErrorMsg(null);
-
-    if (password !== passwordConfirm) {
-      setErrorMsg('Les deux mots de passe ne correspondent pas.');
-      setLoading(false);
-      return;
-    }
-    if (password.length < 8) {
-      setErrorMsg('Le mot de passe doit contenir au moins 8 caractères.');
-      setLoading(false);
-      return;
-    }
-
     try {
       const response = await api.post('/register', {
-        nom, prenom, email, telephone,
+        nom,
+        prenom,
+        email,
+        telephone,
         password,
         password_confirmation: passwordConfirm,
       });
@@ -55,181 +50,121 @@ const Register: React.FC = () => {
     }
   };
 
-  const inputStyle: React.CSSProperties = {
-    width: '100%',
-    boxSizing: 'border-box',
-    background: 'rgba(255,255,255,0.06)',
-    border: '1px solid rgba(255,255,255,0.12)',
-    borderRadius: 12,
-    color: '#fff',
-    fontSize: 15,
-    padding: '12px 16px',
-    outline: 'none',
-    transition: 'border-color 0.2s',
-    fontFamily: "'Outfit', 'Inter', sans-serif",
-  };
-
-  const labelStyle: React.CSSProperties = {
-    display: 'block',
-    color: 'rgba(255,255,255,0.5)',
-    fontSize: 11,
-    fontWeight: 700,
-    letterSpacing: '0.1em',
-    textTransform: 'uppercase',
-    marginBottom: 7,
-  };
-
-  const fieldStyle: React.CSSProperties = {
-    marginBottom: 14,
-  };
+  const inputClass = "w-full bg-white border border-[#E8E2D5] focus:border-[#2D5A4C] focus:ring-2 focus:ring-[#2D5A4C]/20 rounded-xl text-[#1F2937] text-sm p-3.5 outline-none transition-all placeholder:text-slate-400 shadow-sm";
+  const labelClass = "block text-[#1F2937] text-[11px] font-bold uppercase tracking-wider mb-2";
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      background: 'linear-gradient(135deg, #0a1f0f 0%, #0d3b1e 40%, #1a1a2e 100%)',
-      fontFamily: "'Outfit', 'Inter', -apple-system, sans-serif",
-      padding: '32px 16px',
-    }}>
+    <div className="min-h-screen bg-[#FDFBF7] font-sans flex items-center justify-center p-4 sm:p-6">
+      {/* Décoration de fond subtile */}
+      <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-[#2D5A4C] via-[#B45309] to-[#2D5A4C]" />
+
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.45 }}
-        style={{ width: '100%', maxWidth: 500 }}
+        transition={{ duration: 0.5 }}
+        className="w-full max-w-lg relative z-10"
       >
-        {/* Header */}
-        <div style={{ textAlign: 'center', marginBottom: 32 }}>
-          <div style={{
-            width: 64, height: 64,
-            background: 'rgba(16, 185, 129, 0.15)',
-            border: '1px solid rgba(16, 185, 129, 0.4)',
-            borderRadius: 20,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 28, margin: '0 auto 14px',
-          }}>👤</div>
-          <h1 style={{ color: '#fff', fontSize: 26, fontWeight: 900, margin: 0 }}>Créer un compte</h1>
-          <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 14, marginTop: 6 }}>
-            Inscrivez-vous pour initier vos démarches de pèlerinage
-          </p>
+        {/* En-tête */}
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-[#2D5A4C] rounded-2xl flex items-center justify-center text-3xl mx-auto mb-4 shadow-lg text-[#FEF3C7] border border-[#B45309]/30">
+            🕋
+          </div>
+          <div className="text-[#2D5A4C] font-black text-xl" style={{ fontFamily: "'Playfair Display', serif" }}>
+            ASEMAOU Voyage & Tourisme HDJ
+          </div>
+          <h1 className="text-[#2D5A4C] text-2xl font-black mt-2">Créer un Compte</h1>
+          <p className="text-[#4B5563] text-sm mt-1">Inscrivez-vous pour initier vos démarches de pèlerinage</p>
         </div>
 
-        {/* Card */}
-        <div style={{
-          background: 'rgba(255,255,255,0.04)',
-          border: '1px solid rgba(255,255,255,0.1)',
-          borderRadius: 24,
-          padding: '32px',
-        }}>
+        {/* Carte formulaire */}
+        <div className="bg-white border border-[#E8E2D5] rounded-3xl p-6 sm:p-8 shadow-xl shadow-stone-200/50">
           {/* Erreur */}
           {errorMsg && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              style={{
-                background: 'rgba(239,68,68,0.12)',
-                border: '1px solid rgba(239,68,68,0.4)',
-                borderRadius: 12,
-                padding: '12px 16px',
-                marginBottom: 20,
-                color: '#fca5a5',
-                fontSize: 14,
-                display: 'flex', alignItems: 'center', gap: 10,
-              }}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="bg-red-50 border border-red-200 rounded-xl p-4 mb-6 text-red-700 text-sm flex items-center gap-3"
             >
-              <span>⚠️</span> {errorMsg}
+              <span className="text-lg">⚠️</span>
+              <span>{errorMsg}</span>
             </motion.div>
           )}
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-4">
             {/* Nom & Prénom */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 14 }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label style={labelStyle}>Nom</label>
+                <label className={labelClass}>Nom</label>
                 <input
                   type="text" required value={nom}
                   onChange={e => setNom(e.target.value)}
-                  placeholder="Ex: Ouédraogo" style={inputStyle}
-                  onFocus={e => e.target.style.borderColor = 'rgba(16,185,129,0.7)'}
-                  onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.12)'}
+                  placeholder="Ex: Ouédraogo"
+                  className={inputClass}
                 />
               </div>
               <div>
-                <label style={labelStyle}>Prénom</label>
+                <label className={labelClass}>Prénom</label>
                 <input
                   type="text" required value={prenom}
                   onChange={e => setPrenom(e.target.value)}
-                  placeholder="Ex: Moussa" style={inputStyle}
-                  onFocus={e => e.target.style.borderColor = 'rgba(16,185,129,0.7)'}
-                  onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.12)'}
+                  placeholder="Ex: Moussa"
+                  className={inputClass}
                 />
               </div>
             </div>
 
-            <div style={fieldStyle}>
-              <label style={labelStyle}>Adresse E-mail</label>
+            <div>
+              <label className={labelClass}>Adresse E-mail</label>
               <input
                 type="email" required value={email}
                 onChange={e => setEmail(e.target.value)}
-                placeholder="votre@email.com" style={inputStyle}
-                onFocus={e => e.target.style.borderColor = 'rgba(16,185,129,0.7)'}
-                onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.12)'}
+                placeholder="votre@email.com"
+                className={inputClass}
               />
             </div>
 
-            <div style={fieldStyle}>
-              <label style={labelStyle}>Téléphone</label>
+            <div>
+              <label className={labelClass}>Téléphone</label>
               <input
                 type="tel" required value={telephone}
                 onChange={e => setTelephone(e.target.value)}
-                placeholder="+226 70 00 00 00" style={inputStyle}
-                onFocus={e => e.target.style.borderColor = 'rgba(16,185,129,0.7)'}
-                onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.12)'}
+                placeholder="+226 70 00 00 00"
+                className={inputClass}
               />
             </div>
 
-            <div style={fieldStyle}>
-              <label style={labelStyle}>Mot de Passe</label>
-              <div style={{ position: 'relative' }}>
+            <div>
+              <label className={labelClass}>Mot de Passe</label>
+              <div className="relative">
                 <input
                   type={showPass ? 'text' : 'password'} required value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="Min. 8 caractères"
-                  style={{ ...inputStyle, paddingRight: 48 }}
-                  onFocus={e => e.target.style.borderColor = 'rgba(16,185,129,0.7)'}
-                  onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.12)'}
+                  className={inputClass + ' pr-12'}
                 />
                 <button type="button" onClick={() => setShowPass(!showPass)}
-                  style={{ position: 'absolute', right: 14, top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 16 }}>
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-[#1F2937] transition-colors text-base">
                   {showPass ? '🙈' : '👁️'}
                 </button>
               </div>
             </div>
 
-            <div style={{ marginBottom: 24 }}>
-              <label style={labelStyle}>Confirmer le Mot de Passe</label>
+            <div>
+              <label className={labelClass}>Confirmer le Mot de Passe</label>
               <input
                 type={showPass ? 'text' : 'password'} required value={passwordConfirm}
                 onChange={e => setPasswordConfirm(e.target.value)}
-                placeholder="Répéter le mot de passe" style={inputStyle}
-                onFocus={e => e.target.style.borderColor = 'rgba(16,185,129,0.7)'}
-                onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.12)'}
+                placeholder="Répéter le mot de passe"
+                className={inputClass}
               />
             </div>
 
+            {/* Séparateur */}
+            <div className="border-t border-[#E8E2D5] pt-2" />
+
             <button
               type="submit" disabled={loading}
-              style={{
-                width: '100%',
-                background: loading ? 'rgba(16,185,129,0.4)' : '#059669',
-                color: '#fff', fontWeight: 800, fontSize: 15, padding: '15px',
-                borderRadius: 12, border: 'none',
-                cursor: loading ? 'not-allowed' : 'pointer',
-                boxShadow: '0 4px 24px rgba(5,150,105,0.35)',
-                transition: 'all 0.2s', letterSpacing: '0.02em',
-                fontFamily: "'Outfit', 'Inter', sans-serif",
-              }}
+              className="btn-primary w-full !py-4 !text-sm flex items-center justify-center gap-2 cursor-pointer disabled:opacity-50 transition-all duration-200"
             >
               {loading ? '⏳ Inscription en cours...' : 'Créer mon compte →'}
             </button>
@@ -237,20 +172,18 @@ const Register: React.FC = () => {
         </div>
 
         {/* Liens */}
-        <p style={{ textAlign: 'center', marginTop: 20, color: 'rgba(255,255,255,0.4)', fontSize: 14 }}>
+        <p className="text-center mt-6 text-[#4B5563] text-xs">
           Vous avez déjà un compte ?{' '}
-          <Link to="/connexion" style={{ color: '#34d399', fontWeight: 700, textDecoration: 'none' }}>
+          <Link to="/connexion" className="text-[#2D5A4C] font-bold hover:text-[#B45309] transition-colors">
             Se connecter
           </Link>
         </p>
-        <p style={{ textAlign: 'center', marginTop: 6 }}>
-          <Link to="/" style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13, textDecoration: 'none' }}>
-            ← Retour à la page d'accueil
+        <p className="text-center mt-2">
+          <Link to="/" className="text-slate-400 hover:text-[#2D5A4C] text-xs transition-colors">
+            ← Retour à l'accueil
           </Link>
         </p>
       </motion.div>
-
-      <style>{`input::placeholder { color: rgba(255,255,255,0.25) !important; }`}</style>
     </div>
   );
 };

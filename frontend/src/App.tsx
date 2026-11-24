@@ -49,12 +49,41 @@ const App: React.FC = () => {
       locale={frFR}
       theme={{
         token: {
-          colorPrimary: '#16a34a',
-          colorPrimaryHover: '#15803d',
-          colorPrimaryActive: '#0d3b1e',
+          colorPrimary: '#2D5A4C',
+          colorPrimaryHover: '#23473C',
+          colorPrimaryActive: '#1B362E',
+          colorInfo: '#B45309',
+          colorSuccess: '#2D5A4C',
+          colorError: '#DC2626',
+          colorWarning: '#B45309',
+          colorTextBase: '#1F2937',
+          colorBgBase: '#FDFBF7',
           borderRadius: 8,
-          fontFamily: "'Outfit', 'Inter', -apple-system, sans-serif",
+          wireframe: false,
+          fontFamily: "var(--font-sans)",
         },
+        components: {
+          Button: {
+            controlHeight: 40,
+            borderRadius: 8,
+            fontWeight: 500,
+          },
+          Input: {
+            controlHeight: 40,
+            borderRadius: 8,
+            colorBorder: '#E8E2D5',
+          },
+          Card: {
+            borderRadiusLG: 16,
+            colorBgContainer: '#FFFFFF',
+            colorBorderSecondary: '#E8E2D5',
+          },
+          Table: {
+            headerBg: '#F5F0E6',
+            headerColor: '#1F2937',
+            rowHoverBg: '#EBF2EE',
+          }
+        }
       }}
     >
       <QueryClientProvider client={queryClient}>

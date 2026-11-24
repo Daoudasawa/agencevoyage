@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { CompassOutlined, CalendarOutlined, TeamOutlined, CreditCardOutlined, SearchOutlined } from '@ant-design/icons';
 
 interface SearchWidgetProps {
   onSearch: (filters: { type: string; date: string; pilgrims: number; budget: number }) => void;
@@ -9,7 +8,7 @@ const SearchWidget: React.FC<SearchWidgetProps> = ({ onSearch }) => {
   const [type, setType] = useState('tous');
   const [date, setDate] = useState('');
   const [pilgrims, setPilgrims] = useState(1);
-  const [budget, setBudget] = useState(4000000);
+  const [budget] = useState(4000000);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -22,102 +21,115 @@ const SearchWidget: React.FC<SearchWidgetProps> = ({ onSearch }) => {
   };
 
   return (
-    <div id="search" className="relative z-30 max-w-6xl mx-auto px-4 -mt-16 md:-mt-24">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white dark:bg-zinc-900 rounded-3xl shadow-2xl border border-gray-100 dark:border-zinc-800 p-6 md:p-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 items-end"
-      >
-        {/* Type de Voyage */}
-        <div className="space-y-2">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-            Type de Voyage
-          </label>
-          <div className="relative">
-            <CompassOutlined className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600 text-lg" />
-            <select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              className="w-full bg-zinc-50 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 pl-11 pr-4 py-3 rounded-2xl border border-transparent focus:border-emerald-500 outline-none text-sm font-medium transition-all appearance-none cursor-pointer"
-            >
-              <option value="tous">Tous les séjours</option>
-              <option value="hajj">Hajj uniquement</option>
-              <option value="omra">Omra uniquement</option>
-            </select>
-          </div>
+    <div id="search" className="relative z-30 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6 sm:-mt-10">
+      <div className="bg-white rounded-3xl shadow-xl border border-[#E8E2D5] p-6 md:p-8">
+        {/* Tabs: Omra / Hajj */}
+        <div className="flex items-center gap-2 mb-6">
+          <button
+            type="button"
+            onClick={() => setType('omra')}
+            className={`px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all cursor-pointer ${
+              type === 'omra' || type === 'tous'
+                ? 'bg-[#EBF2EE] text-[#2D5A4C] border border-[#2D5A4C]/25 shadow-sm'
+                : 'bg-[#F5F0E6] text-[#4B5563] hover:bg-[#E8E2D5]'
+            }`}
+          >
+            <span>🕋</span> Omra
+          </button>
+          <button
+            type="button"
+            onClick={() => setType('hajj')}
+            className={`px-5 py-2.5 rounded-xl font-bold text-xs flex items-center gap-2 transition-all cursor-pointer ${
+              type === 'hajj'
+                ? 'bg-[#EBF2EE] text-[#2D5A4C] border border-[#2D5A4C]/25 shadow-sm'
+                : 'bg-[#F5F0E6] text-[#4B5563] hover:bg-[#E8E2D5]'
+            }`}
+          >
+            <span>🕌</span> Hajj
+          </button>
         </div>
 
-        {/* Date de Départ */}
-        <div className="space-y-2">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-            Période
-          </label>
-          <div className="relative">
-            <CalendarOutlined className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600 text-lg" />
-            <select
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="w-full bg-zinc-50 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 pl-11 pr-4 py-3 rounded-2xl border border-transparent focus:border-emerald-500 outline-none text-sm font-medium transition-all appearance-none cursor-pointer"
-            >
-              <option value="">Tous les mois</option>
-              <option value="2026-03">Mars 2026 (Ramadan)</option>
-              <option value="2026-06">Juin 2026 (Hajj)</option>
-              <option value="2026-09">Septembre 2026</option>
-              <option value="2026-12">Décembre 2026</option>
-            </select>
+        {/* Form fields */}
+        <form onSubmit={handleSubmit} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+          {/* Ville de départ */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-[#1F2937]">Ville de départ</label>
+            <div className="relative">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">📍</span>
+              <select
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full bg-[#FDFBF7] text-[#1F2937] pl-10 pr-4 py-3 rounded-xl border border-[#E8E2D5] focus:border-[#2D5A4C] focus:ring-1 focus:ring-[#2D5A4C] outline-none text-xs font-semibold appearance-none cursor-pointer"
+              >
+                <option value="">Sélectionnez votre ville</option>
+                <option value="ouaga">Ouagadougou</option>
+                <option value="bobo">Bobo-Dioulasso</option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        {/* Nombre de Pèlerins */}
-        <div className="space-y-2">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-            Pèlerins
-          </label>
-          <div className="relative">
-            <TeamOutlined className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600 text-lg" />
-            <input
-              type="number"
-              min="1"
-              max="10"
-              value={pilgrims}
-              onChange={(e) => setPilgrims(parseInt(e.target.value) || 1)}
-              className="w-full bg-zinc-50 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 pl-11 pr-4 py-3 rounded-2xl border border-transparent focus:border-emerald-500 outline-none text-sm font-medium transition-all"
-            />
+          {/* Date de départ */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-[#1F2937]">Date de départ</label>
+            <div className="relative">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">📅</span>
+              <select
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="w-full bg-[#FDFBF7] text-[#1F2937] pl-10 pr-4 py-3 rounded-xl border border-[#E8E2D5] focus:border-[#2D5A4C] focus:ring-1 focus:ring-[#2D5A4C] outline-none text-xs font-semibold appearance-none cursor-pointer"
+              >
+                <option value="">Sélectionnez une date</option>
+                <option value="2026-03">Mars 2026 (Ramadan)</option>
+                <option value="2026-06">Juin 2026 (Hajj)</option>
+                <option value="2026-09">Septembre 2026</option>
+              </select>
+            </div>
           </div>
-        </div>
 
-        {/* Budget Maximum */}
-        <div className="space-y-2">
-          <div className="flex justify-between">
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
-              Budget Max
-            </label>
-            <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">
-              {(budget / 1000000).toFixed(1)}M FCFA
-            </span>
+          {/* Durée du séjour */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-[#1F2937]">Durée du séjour</label>
+            <div className="relative">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">🕒</span>
+              <select
+                className="w-full bg-[#FDFBF7] text-[#1F2937] pl-10 pr-4 py-3 rounded-xl border border-[#E8E2D5] focus:border-[#2D5A4C] focus:ring-1 focus:ring-[#2D5A4C] outline-none text-xs font-semibold appearance-none cursor-pointer"
+              >
+                <option value="">Sélectionnez</option>
+                <option value="12">12 Jours</option>
+                <option value="14">14 Jours</option>
+                <option value="21">21 Jours</option>
+                <option value="30">1 Mois complet</option>
+              </select>
+            </div>
           </div>
-          <div className="relative">
-            <CreditCardOutlined className="absolute left-4 top-1/2 -translate-y-1/2 text-emerald-600 text-lg" />
-            <input
-              type="range"
-              min="800000"
-              max="5000000"
-              step="100000"
-              value={budget}
-              onChange={(e) => setBudget(parseInt(e.target.value))}
-              className="w-full accent-emerald-600 bg-zinc-150 dark:bg-zinc-800 h-2 rounded-lg cursor-pointer mt-4"
-            />
-          </div>
-        </div>
 
-        {/* Bouton Rechercher */}
-        <button
-          type="submit"
-          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm px-6 py-3.5 rounded-2xl shadow-lg shadow-emerald-600/20 hover:shadow-emerald-600/35 transition-all flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-        >
-          <SearchOutlined className="text-base" />
-          Rechercher
-        </button>
-      </form>
+          {/* Nombre de personnes */}
+          <div className="space-y-1.5">
+            <label className="block text-xs font-bold text-[#1F2937]">Nombre de personnes</label>
+            <div className="relative">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm">👤</span>
+              <select
+                value={pilgrims}
+                onChange={(e) => setPilgrims(parseInt(e.target.value) || 1)}
+                className="w-full bg-[#FDFBF7] text-[#1F2937] pl-10 pr-4 py-3 rounded-xl border border-[#E8E2D5] focus:border-[#2D5A4C] focus:ring-1 focus:ring-[#2D5A4C] outline-none text-xs font-semibold appearance-none cursor-pointer"
+              >
+                <option value={1}>1 personne</option>
+                <option value={2}>2 personnes (Couple)</option>
+                <option value={4}>4 personnes (Famille)</option>
+              </select>
+            </div>
+          </div>
+
+          {/* Action CTA Search Button (10% Accent Terre Cuite) */}
+          <button
+            type="submit"
+            className="btn-primary w-full !py-3 !px-6 !text-xs shadow-md flex items-center justify-center gap-2 cursor-pointer"
+          >
+            Rechercher
+            <span>🔍</span>
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

@@ -1,9 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import SectionWrapper from '../ui/SectionWrapper';
-import SkeletonCard from '../ui/SkeletonCard';
 import type { Forfait } from '../../types/homepage';
-import { CalendarOutlined, HomeOutlined, CompassOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
 interface OffersSectionProps {
@@ -12,158 +9,260 @@ interface OffersSectionProps {
   filters: { type: string; date: string; pilgrims: number; budget: number };
 }
 
-const OffersSection: React.FC<OffersSectionProps> = ({ offers, isLoading, filters }) => {
+const OffersSection: React.FC<OffersSectionProps> = ({ offers: _offers, isLoading: _isLoading, filters: _filters }) => {
   const navigate = useNavigate();
-
-  // Filter packages based on SearchWidget selections
-  const filteredOffers = offers.filter((offer) => {
-    // 1. Filter by Type
-    if (filters.type !== 'tous' && offer.type !== filters.type) {
-      return false;
-    }
-    // 2. Filter by Budget
-    if (offer.prix > filters.budget) {
-      return false;
-    }
-    return true;
-  });
-
-  const getPackageImage = (offer: Forfait) => {
-    if (offer.type === 'hajj') {
-      return offer.prix > 3000000
-        ? 'https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=800&q=80' // Kaaba premium
-        : 'https://images.unsplash.com/photo-1591604021695-0c69b7c05981?auto=format&fit=crop&w=800&q=80'; // Medina
-    }
-    return offer.prix > 1000000
-      ? 'https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=800&q=80' // Medina dome
-      : 'https://images.unsplash.com/photo-1604999333679-b86d54738315?auto=format&fit=crop&w=800&q=80'; // Mecca road
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'XOF',
-      maximumFractionDigits: 0,
-    }).format(price);
-  };
 
   return (
     <SectionWrapper id="offres" bgColor="light">
-      {/* Section Title */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-        <div className="max-w-2xl">
-          <span className="text-emerald-600 dark:text-emerald-400 text-sm font-bold uppercase tracking-wider">
-            Nos Séjours
-          </span>
-          <h2 className="text-3xl md:text-4xl font-extrabold text-zinc-900 dark:text-white tracking-tight mt-2">
-            Forfaits Populaires Hajj & Omra
-          </h2>
-          <p className="mt-4 text-lg text-zinc-550 dark:text-zinc-400">
-            Découvrez nos offres tout compris adaptées à vos besoins, avec des hébergements de qualité et un accompagnement complet.
-          </p>
+      {/* 1. Trust Bar / Value Proposition Strip */}
+      <div className="bg-white rounded-2xl border border-[#E8E2D5] p-5 mb-12 shadow-sm">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 divide-y md:divide-y-0 md:divide-x divide-[#E8E2D5]">
+          {/* Item 1 */}
+          <div className="flex items-center gap-3 pt-2 md:pt-0">
+            <div className="w-10 h-10 rounded-xl bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center text-xl shrink-0 font-bold">
+              🛂
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-[#1F2937]">Visa garanti</h4>
+              <p className="text-[11px] text-[#4B5563] font-medium">Obtention rapide</p>
+            </div>
+          </div>
+
+          {/* Item 2 */}
+          <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4">
+            <div className="w-10 h-10 rounded-xl bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center text-xl shrink-0 font-bold">
+              🏷️
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-[#1F2937]">Prix transparents</h4>
+              <p className="text-[11px] text-[#4B5563] font-medium">Aucun frais caché</p>
+            </div>
+          </div>
+
+          {/* Item 3 */}
+          <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4">
+            <div className="w-10 h-10 rounded-xl bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center text-xl shrink-0 font-bold">
+              👥
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-[#1F2937]">Accompagnement</h4>
+              <p className="text-[11px] text-[#4B5563] font-medium">Avant, pendant et après</p>
+            </div>
+          </div>
+
+          {/* Item 4 */}
+          <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4">
+            <div className="w-10 h-10 rounded-xl bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center text-xl shrink-0 font-bold">
+              🏢
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-[#1F2937]">Hôtels de qualité</h4>
+              <p className="text-[11px] text-[#4B5563] font-medium">Sélection rigoureuse</p>
+            </div>
+          </div>
+
+          {/* Item 5 */}
+          <div className="flex items-center gap-3 pt-2 md:pt-0 md:pl-4">
+            <div className="w-10 h-10 rounded-xl bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center text-xl shrink-0 font-bold">
+              🎧
+            </div>
+            <div>
+              <h4 className="text-xs font-bold text-[#1F2937]">Support 24h/24</h4>
+              <p className="text-[11px] text-[#4B5563] font-medium">Toujours à votre écoute</p>
+            </div>
+          </div>
         </div>
       </div>
 
-      {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[...Array(3)].map((_, i) => (
-            <SkeletonCard key={i} type="offer" />
-          ))}
-        </div>
-      ) : filteredOffers.length === 0 ? (
-        <div className="text-center py-16 bg-zinc-50 dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-250 dark:border-zinc-800">
-          <CompassOutlined className="text-5xl text-zinc-350 dark:text-zinc-600 mb-4" />
-          <h3 className="text-xl font-bold text-zinc-700 dark:text-zinc-300">Aucun forfait disponible</h3>
-          <p className="text-zinc-500 dark:text-zinc-500 mt-2 max-w-md mx-auto">
-            Nous n'avons trouvé aucun forfait correspondant à vos critères de recherche. Essayez d'augmenter votre budget ou de changer de filtre.
-          </p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredOffers.map((offer, index) => (
-            <motion.div
-              key={offer.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white dark:bg-zinc-900 rounded-3xl overflow-hidden border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-xl transition-all duration-300 group flex flex-col h-[520px]"
-            >
-              {/* Card Image */}
-              <div className="relative h-60 overflow-hidden bg-zinc-100">
+      {/* 2. Main Content Grid (8 cols Offers + 4 cols Sidebars) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left Area: Nos offres populaires (8 cols) */}
+        <div className="lg:col-span-8 space-y-6">
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl font-bold text-[#2D5A4C]">Nos offres populaires</h3>
+            <a href="#toutes-offres" className="text-xs font-bold text-[#B45309] hover:text-[#92400E] flex items-center gap-1 transition-colors">
+              Voir toutes les offres ➔
+            </a>
+          </div>
+
+          {/* Offers Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* Card 1 */}
+            <div className="asemaou-card overflow-hidden group">
+              <div className="relative h-44 overflow-hidden">
                 <img
-                  src={getPackageImage(offer)}
-                  alt={offer.nom}
-                  loading="lazy"
+                  src="https://images.unsplash.com/photo-1564769625905-50e93615e769?auto=format&fit=crop&w=800&q=80"
+                  alt="Omra Économique"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                
-                {/* Type Badge */}
-                <span className={`absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider text-white shadow-md z-10 ${
-                  offer.type === 'hajj' ? 'bg-amber-600' : 'bg-emerald-600'
-                }`}>
-                  {offer.type}
+                <span className="absolute top-3 left-3 bg-[#2D5A4C] text-[#FDFBF7] text-[10px] font-bold px-3 py-1 rounded-full shadow-sm">
+                  12 jours
                 </span>
-
-                {/* Duration Badge */}
-                <span className="absolute bottom-4 right-4 bg-black/60 backdrop-blur-sm px-3.5 py-1.5 rounded-xl text-xs font-bold text-white flex items-center gap-1.5 z-10">
-                  <CalendarOutlined />
-                  {offer.duree} Jours
+                <span className="absolute top-3 right-3 bg-white/95 backdrop-blur-md text-[#1F2937] text-[11px] font-bold px-2.5 py-0.5 rounded-md border border-[#E8E2D5]">
+                  Omra Économique
                 </span>
-                
-                {/* Visual Gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
               </div>
-
-              {/* Card Body */}
-              <div className="p-6 flex-1 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-xl font-bold text-zinc-900 dark:text-white line-clamp-1 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
-                    {offer.nom}
-                  </h3>
-                  
-                  {/* Description */}
-                  <p className="text-zinc-500 dark:text-zinc-400 text-sm mt-3 line-clamp-3 leading-relaxed">
-                    {offer.description || 'Description complète du séjour spirituel.'}
-                  </p>
-                  
-                  {/* Key details list */}
-                  <div className="mt-4 flex flex-wrap gap-y-2 gap-x-4 text-xs font-medium text-zinc-400 dark:text-zinc-500">
-                    <span className="flex items-center gap-1">
-                      <HomeOutlined className="text-emerald-600" />
-                      Hôtels inclus
-                    </span>
-                    <span className="flex items-center gap-1">
-                      ✈️ Vol Aller-Retour
-                    </span>
-                    <span className="flex items-center gap-1">
-                      🛂 Visa compris
-                    </span>
-                  </div>
+              <div className="p-4 space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[#B45309] font-bold flex items-center gap-1">
+                    ★ 4.8 <span className="text-slate-400 font-normal">(120)</span>
+                  </span>
+                  <span className="font-extrabold text-[#2D5A4C] text-sm">1 200 000 FCFA</span>
                 </div>
-
-                {/* Price and Action */}
-                <div className="pt-4 border-t border-gray-50 dark:border-zinc-800 flex items-center justify-between mt-6">
-                  <div>
-                    <span className="text-[10px] font-semibold text-zinc-450 dark:text-zinc-500 uppercase tracking-widest block">Tarif</span>
-                    <span className="text-xl font-black text-emerald-600 dark:text-emerald-400 tabular-nums">
-                      {formatPrice(offer.prix)}
-                    </span>
-                  </div>
-                  
-                  <button
-                    onClick={() => navigate('/inscription')}
-                    className="flex items-center gap-2 bg-emerald-50 hover:bg-emerald-600 text-emerald-700 hover:text-white font-bold text-sm px-5 py-2.5 rounded-2xl transition-all hover:scale-105 active:scale-95 group/btn cursor-pointer"
-                  >
-                    Réserver
-                    <ArrowRightOutlined className="text-xs group-hover/btn:translate-x-1 transition-transform" />
-                  </button>
-                </div>
+                <p className="text-[11px] text-[#4B5563] font-medium border-t border-[#E8E2D5] pt-2">
+                  Départ : Chaque semaine
+                </p>
               </div>
-            </motion.div>
-          ))}
+            </div>
+
+            {/* Card 2 */}
+            <div className="asemaou-card overflow-hidden group">
+              <div className="relative h-44 overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1591604021695-0c69b7c05981?auto=format&fit=crop&w=800&q=80"
+                  alt="Omra Confort"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <span className="absolute top-3 left-3 bg-[#2D5A4C] text-[#FDFBF7] text-[10px] font-bold px-3 py-1 rounded-full shadow-sm">
+                  14 jours
+                </span>
+                <span className="absolute top-3 right-3 bg-white/95 backdrop-blur-md text-[#1F2937] text-[11px] font-bold px-2.5 py-0.5 rounded-md border border-[#E8E2D5]">
+                  Omra Confort
+                </span>
+              </div>
+              <div className="p-4 space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[#B45309] font-bold flex items-center gap-1">
+                    ★ 4.9 <span className="text-slate-400 font-normal">(98)</span>
+                  </span>
+                  <span className="font-extrabold text-[#2D5A4C] text-sm">1 800 000 FCFA</span>
+                </div>
+                <p className="text-[11px] text-[#4B5563] font-medium border-t border-[#E8E2D5] pt-2">
+                  Départ : Chaque semaine
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3 */}
+            <div className="asemaou-card overflow-hidden group">
+              <div className="relative h-44 overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1580674684081-7617fbf3d745?auto=format&fit=crop&w=800&q=80"
+                  alt="Omra Premium"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <span className="absolute top-3 left-3 bg-[#2D5A4C] text-[#FDFBF7] text-[10px] font-bold px-3 py-1 rounded-full shadow-sm">
+                  14 jours
+                </span>
+                <span className="absolute top-3 right-3 bg-white/95 backdrop-blur-md text-[#1F2937] text-[11px] font-bold px-2.5 py-0.5 rounded-md border border-[#E8E2D5]">
+                  Omra Premium
+                </span>
+              </div>
+              <div className="p-4 space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[#B45309] font-bold flex items-center gap-1">
+                    ★ 4.9 <span className="text-slate-400 font-normal">(156)</span>
+                  </span>
+                  <span className="font-extrabold text-[#2D5A4C] text-sm">2 400 000 FCFA</span>
+                </div>
+                <p className="text-[11px] text-[#4B5563] font-medium border-t border-[#E8E2D5] pt-2">
+                  Départ : Chaque semaine
+                </p>
+              </div>
+            </div>
+
+            {/* Card 4 */}
+            <div className="asemaou-card overflow-hidden group">
+              <div className="relative h-44 overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1604999333679-b86d54738315?auto=format&fit=crop&w=800&q=80"
+                  alt="Omra VIP"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <span className="absolute top-3 left-3 bg-[#2D5A4C] text-[#FDFBF7] text-[10px] font-bold px-3 py-1 rounded-full shadow-sm">
+                  14 jours
+                </span>
+                <span className="absolute top-3 right-3 bg-white/95 backdrop-blur-md text-[#1F2937] text-[11px] font-bold px-2.5 py-0.5 rounded-md border border-[#E8E2D5]">
+                  Omra VIP
+                </span>
+              </div>
+              <div className="p-4 space-y-3">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="text-[#B45309] font-bold flex items-center gap-1">
+                    ★ 5.0 <span className="text-slate-400 font-normal">(78)</span>
+                  </span>
+                  <span className="font-extrabold text-[#2D5A4C] text-sm">3 200 000 FCFA</span>
+                </div>
+                <p className="text-[11px] text-[#4B5563] font-medium border-t border-[#E8E2D5] pt-2">
+                  Départ : Chaque semaine
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-      )}
+
+        {/* Right Area: Sidebars (4 cols) */}
+        <div className="lg:col-span-4 space-y-6">
+          {/* Sidecard 1: Pourquoi nous choisir ? */}
+          <div className="bg-white rounded-3xl border border-[#E8E2D5] p-6 relative overflow-hidden shadow-sm">
+            <h4 className="text-base font-bold text-[#2D5A4C] mb-4">Pourquoi nous choisir ?</h4>
+            
+            <ul className="space-y-3 text-xs font-semibold text-[#1F2937] relative z-10">
+              <li className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-full bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center text-[10px] font-bold">✓</span>
+                Agence agréée et expérimentée
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-full bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center text-[10px] font-bold">✓</span>
+                Meilleurs prix du marché
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-full bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center text-[10px] font-bold">✓</span>
+                Paiement sécurisé
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-full bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center text-[10px] font-bold">✓</span>
+                Guides francophones expérimentés
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="w-4 h-4 rounded-full bg-[#EBF2EE] text-[#2D5A4C] flex items-center justify-center text-[10px] font-bold">✓</span>
+                Hôtels proches des lieux saints
+              </li>
+            </ul>
+
+            {/* Background Mosque Dome graphic */}
+            <div className="absolute -bottom-4 -right-4 w-28 h-28 opacity-20 pointer-events-none text-[#2D5A4C] text-7xl flex items-center justify-center">
+              🕌
+            </div>
+          </div>
+
+          {/* Sidecard 2: Offre spéciale Ramadan Banner (Vert Sauge Foncé avec CTA Terre Cuite) */}
+          <div className="bg-[#2D5A4C] rounded-3xl p-6 text-white relative overflow-hidden shadow-lg flex flex-col justify-between min-h-[160px]">
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 text-[#FEF3C7] text-xs font-bold uppercase tracking-wider mb-2">
+                <span>🌙</span> Offre spéciale Ramadan
+              </div>
+              <h3 className="text-3xl font-black tracking-tight text-[#FDFBF7] mb-1">
+                -10% <span className="text-sm font-normal text-[#FDFBF7]/80">Sur toutes nos formules Omra</span>
+              </h3>
+            </div>
+
+            <div className="pt-4 relative z-10">
+              <button
+                onClick={() => navigate('/inscription')}
+                className="btn-primary !py-2.5 !px-5 !text-xs shadow-md cursor-pointer"
+              >
+                Profiter de l'offre
+              </button>
+            </div>
+
+            {/* Decorative Gold Lantern / Crescent Graphic */}
+            <div className="absolute top-2 right-3 text-4xl opacity-30 text-[#FEF3C7] pointer-events-none">
+              🏮
+            </div>
+          </div>
+        </div>
+      </div>
     </SectionWrapper>
   );
 };

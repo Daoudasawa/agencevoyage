@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layout, Menu, Button, Avatar, Dropdown, Space, theme } from 'antd';
+import { Layout, Menu, Avatar, Dropdown, Space } from 'antd';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
@@ -9,7 +9,6 @@ import {
   HomeOutlined,
   CalendarOutlined,
   FileTextOutlined,
-  CreditCardOutlined,
   TeamOutlined,
   LogoutOutlined,
   SettingOutlined,
@@ -17,7 +16,7 @@ import {
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 interface AppLayoutProps {
   children: React.ReactNode;
@@ -29,10 +28,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
-
   const handleLogout = async () => {
     await logout();
     navigate('/connexion');
@@ -41,7 +36,6 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   // Définir les items de menu selon le rôle de l'utilisateur
   const getMenuItems = () => {
     if (!user) return [];
-
     const baseItems = [];
 
     if (user.role === 'admin') {
@@ -132,10 +126,8 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     },
   ];
 
-  // Obtenir la clé active pour le menu (chemin de base)
   const getSelectedKey = () => {
     const path = location.pathname;
-    // Gérer les cas où le chemin est imbriqué (ex: /agent/pelerins/5)
     if (path.startsWith('/admin/forfaits')) return '/admin/forfaits';
     if (path.startsWith('/admin/vols')) return '/admin/vols';
     if (path.startsWith('/admin/hotels')) return '/admin/hotels';
@@ -152,108 +144,174 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
     pelerin: 'Pèlerin',
   };
 
-  const roleColors: Record<string, string> = {
-    admin: '#d48806',
-    agent: '#1d39c4',
-    pelerin: '#389e0d',
+  const roleBadgeStyle: Record<string, React.CSSProperties> = {
+    admin: { background: '#B45309', color: '#fff' },
+    agent: { background: '#2D5A4C', color: '#fff' },
+    pelerin: { background: '#3D6B5D', color: '#fff' },
   };
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ minHeight: '100vh', background: '#FDFBF7' }}>
+      {/* ── SIDEBAR ── */}
       <Sider
         trigger={null}
         collapsible
         collapsed={collapsed}
-        theme="dark"
+        theme="light"
         style={{
-          boxShadow: '2px 0 8px 0 rgba(29,35,41,.05)',
-          background: '#0d2b18', // Vert très sombre pour le menu
+          boxShadow: '4px 0 20px rgba(45,90,76,0.08)',
+          background: '#2D5A4C',
+          borderRight: 'none',
+          position: 'fixed',
+          left: 0,
+          top: 0,
+          bottom: 0,
+          height: '100vh',
+          zIndex: 100,
+          overflow: 'hidden',
         }}
       >
+        {/* Logo */}
         <div style={{
-          height: 64,
-          margin: 16,
+          padding: '20px 16px',
+          borderBottom: '1px solid rgba(180, 83, 9, 0.25)',
           display: 'flex',
-          justifyContent: 'center',
           alignItems: 'center',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+          gap: 10,
+          minHeight: 72,
         }}>
-          <h2 style={{
-            color: '#c9a84c', // Doré pour le logo
-            margin: 0,
-            fontSize: collapsed ? '1.2rem' : '1.4rem',
-            fontWeight: 'bold',
-            textAlign: 'center',
-            transition: 'all 0.2s',
-            whiteSpace: 'nowrap',
-            overflow: 'hidden'
-          }}>
-            {collapsed ? 'H&O' : 'Hajj & Omra'}
-          </h2>
+          <span style={{ fontSize: 22, flexShrink: 0 }}>🕌</span>
+          {!collapsed && (
+            <div style={{ overflow: 'hidden' }}>
+              <Link to="/" style={{ textDecoration: 'none' }}>
+                <div style={{
+                  color: '#FEF3C7',
+                  fontWeight: 900,
+                  fontSize: 13,
+                  lineHeight: 1.2,
+                  letterSpacing: '-0.02em',
+                  whiteSpace: 'nowrap',
+                }}>ASEMAOU</div>
+                <div style={{
+                  color: 'rgba(255,255,255,0.65)',
+                  fontSize: 9,
+                  letterSpacing: '0.1em',
+                  textTransform: 'uppercase',
+                  whiteSpace: 'nowrap',
+                }}>Voyage & Tourisme HDJ</div>
+              </Link>
+            </div>
+          )}
         </div>
+
+        {/* Menu */}
         <Menu
           theme="dark"
           mode="inline"
           selectedKeys={[getSelectedKey()]}
           items={getMenuItems()}
-          style={{ background: '#0d2b18' }}
+          style={{
+            background: '#2D5A4C',
+            border: 'none',
+            paddingTop: 8,
+            flex: 1,
+          }}
         />
+
+        {/* Bouton collapse en bas */}
+        <div
+          onClick={() => setCollapsed(!collapsed)}
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: 52,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: collapsed ? 'center' : 'flex-end',
+            paddingRight: collapsed ? 0 : 20,
+            borderTop: '1px solid rgba(255,255,255,0.08)',
+            cursor: 'pointer',
+            color: 'rgba(255,255,255,0.5)',
+            fontSize: 16,
+            transition: 'all 0.2s',
+          }}
+        >
+          {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+          {!collapsed && <span style={{ fontSize: 11, marginLeft: 6, letterSpacing: '0.05em' }}>Réduire</span>}
+        </div>
       </Sider>
-      <Layout>
-        <Header style={{
-          padding: 0,
-          background: colorBgContainer,
+
+      {/* ── MAIN LAYOUT ── */}
+      <Layout style={{
+        marginLeft: collapsed ? 80 : 200,
+        transition: 'margin-left 0.2s ease',
+        background: '#FDFBF7',
+        minHeight: '100vh',
+      }}>
+        {/* Top Header */}
+        <div style={{
+          position: 'sticky',
+          top: 0,
+          zIndex: 50,
+          background: '#ffffff',
+          borderBottom: '1px solid #E8E2D5',
+          boxShadow: '0 1px 8px rgba(45,90,76,0.04)',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          paddingRight: 24,
-          boxShadow: '0 1px 4px rgba(0,21,41,.08)',
-          zIndex: 1
+          padding: '0 24px',
+          height: 64,
         }}>
-          <Button
-            type="text"
-            icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-            onClick={() => setCollapsed(!collapsed)}
-            style={{
-              fontSize: '16px',
-              width: 64,
-              height: 64,
-            }}
-          />
+          {/* Fil d'Ariane / Page title placeholder */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{
+              width: 4,
+              height: 20,
+              borderRadius: 99,
+              background: '#B45309',
+            }} />
+            <span style={{ color: '#2D5A4C', fontWeight: 700, fontSize: 15 }}>
+              Espace {roleLabels[user?.role || 'pelerin']}
+            </span>
+          </div>
 
+          {/* Zone utilisateur */}
           <Space size="middle">
             <div style={{ textAlign: 'right' }}>
-              <div style={{ fontWeight: 'bold', lineHeight: '1.2' }}>{user?.prenom} {user?.nom}</div>
+              <div style={{ fontWeight: 700, fontSize: 14, color: '#1F2937', lineHeight: 1.3 }}>
+                {user?.prenom} {user?.nom}
+              </div>
               <span style={{
-                fontSize: '11px',
+                fontSize: 10,
                 color: '#fff',
-                background: roleColors[user?.role || 'pelerin'],
-                padding: '2px 8px',
-                borderRadius: '10px',
+                padding: '2px 10px',
+                borderRadius: 99,
                 display: 'inline-block',
-                marginTop: '4px'
+                marginTop: 3,
+                fontWeight: 700,
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+                ...roleBadgeStyle[user?.role || 'pelerin'],
               }}>
                 {roleLabels[user?.role || 'pelerin']}
               </span>
             </div>
             <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" trigger={['click']}>
               <Avatar
-                style={{ backgroundColor: '#1a6b3a', cursor: 'pointer' }}
+                style={{ backgroundColor: '#2D5A4C', cursor: 'pointer', border: '2px solid #B45309' }}
                 icon={<UserOutlined />}
               />
             </Dropdown>
           </Space>
-        </Header>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-            borderRadius: borderRadiusLG,
-            overflowY: 'auto',
-          }}
-        >
+        </div>
+
+        {/* Content */}
+        <Content style={{
+          margin: '24px',
+          minHeight: 280,
+        }}>
           {children}
         </Content>
       </Layout>
